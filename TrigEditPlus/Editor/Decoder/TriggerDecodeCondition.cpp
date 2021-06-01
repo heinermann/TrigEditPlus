@@ -57,6 +57,7 @@ void TriggerEditor::DecodeCondition(lua_State* L, StringBuffer& buf, const TrigC
 		{
 			uint32_t player = content.player;
 			uint32_t unitid = content.uid;
+			uint16_t maskprop = content.maskflag;
 			if (
 				(player >= 28 && unitid < 228) ||  // EPD Action
 				(player < 12 && unitid >= 228)  // EUD Action
@@ -67,7 +68,24 @@ void TriggerEditor::DecodeCondition(lua_State* L, StringBuffer& buf, const TrigC
 
 				char offsetstr[11]; sprintf(offsetstr, "0x%06X", offset);
 				char numberstr[11]; sprintf(numberstr, "0x%08X", number);
+				if (maskprop == 0x4353) {
+					uint32_t bitmask = content.locid;
+
+					char bitmaskstr[11]; sprintf(bitmaskstr, "0x%08X", bitmask);
+					buf << "MemoryX(" << offsetstr << ", " << DecodeComparison(cmptype) << ", " << numberstr << ", " << bitmaskstr << ")";
+					goto cnddec_overridden;
+				}
 				buf << "Memory(" << offsetstr << ", " << DecodeComparison(cmptype) << ", " << numberstr << ")";
+				goto cnddec_overridden;
+			}
+			if (maskprop == 0x4353) {
+				uint32_t number = content.res;
+				uint32_t bitmask = content.locid;
+				uint32_t cmptype = content.setting;
+
+				char numberstr[11]; sprintf(numberstr, "0x%08X", number);
+				char bitmaskstr[11]; sprintf(bitmaskstr, "0x%08X", bitmask);
+				buf << "DeathsX(" << DecodePlayer(player) << ", " << DecodeComparison(cmptype) << ", " << numberstr << ", " << unitid << ", " << bitmaskstr << ")";
 				goto cnddec_overridden;
 			}
 		}

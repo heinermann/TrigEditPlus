@@ -118,12 +118,14 @@ function Trigger(args)
 end
 
 
-function Condition(locid, player, amount, unitid, comparison, condtype, restype, flags)
-    return {locid, player, amount, unitid, comparison, condtype, restype, flags, __trg_magic="condition"}
+function Condition(locid, player, amount, unitid, comparison, condtype, restype, flags, eudx)
+    if eudx == nil then eudx = 0 end
+    return {locid, player, amount, unitid, comparison, condtype, restype, flags, eudx, __trg_magic="condition"}
 end
 
-function Action(locid1, strid, wavid, time, player1, player2, unitid, acttype, amount, flags)
-    return {locid1, strid, wavid, time, player1, player2, unitid, acttype, amount, flags, __trg_magic="action"}
+function Action(locid1, strid, wavid, time, player1, player2, unitid, acttype, amount, flags, eudx)
+    if eudx == nil then eudx = 0 end
+    return {locid1, strid, wavid, time, player1, player2, unitid, acttype, amount, flags, eudx, __trg_magic="action"}
 end
 
 

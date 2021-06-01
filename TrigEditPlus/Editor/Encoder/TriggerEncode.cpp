@@ -115,26 +115,27 @@ int LuaEncodeTrigger(lua_State* L) {
 				return LuaErrorf(L, "condition #%d is invalid. (not a table)", i);
 			}
 
-			if (lua_rawlen(L, -1) != 8) {
-				return LuaErrorf(L, "condition #%d is invalid. (has %d elements, expected 8)", i, lua_rawlen(L, -1));
+			if (lua_rawlen(L, -1) != 9) {
+				return LuaErrorf(L, "condition #%d is invalid. (has %d elements, expected 9)", i, lua_rawlen(L, -1));
 			}
 
 			// pop all elements
-			for (int j = 1; j <= 8; j++) {
+			for (int j = 1; j <= 9; j++) {
 				lua_pushinteger(L, j);
 				lua_gettable(L, -1 - j); // < t.conditions[i][j]
 			}
 
-			t.cond[i - 1].locid = luaL_checkinteger(L, -8);
-			t.cond[i - 1].player = luaL_checkinteger(L, -7);
-			t.cond[i - 1].res = luaL_checkinteger(L, -6);
-			t.cond[i - 1].uid = luaL_checkinteger(L, -5);
-			t.cond[i - 1].setting = luaL_checkinteger(L, -4);
-			t.cond[i - 1].condtype = luaL_checkinteger(L, -3);
-			t.cond[i - 1].res_setting = luaL_checkinteger(L, -2);
-			t.cond[i - 1].prop = luaL_checkinteger(L, -1);
+			t.cond[i - 1].locid = luaL_checkinteger(L, -9);
+			t.cond[i - 1].player = luaL_checkinteger(L, -8);
+			t.cond[i - 1].res = luaL_checkinteger(L, -7);
+			t.cond[i - 1].uid = luaL_checkinteger(L, -6);
+			t.cond[i - 1].setting = luaL_checkinteger(L, -5);
+			t.cond[i - 1].condtype = luaL_checkinteger(L, -4);
+			t.cond[i - 1].res_setting = luaL_checkinteger(L, -3);
+			t.cond[i - 1].prop = luaL_checkinteger(L, -2);
+			t.cond[i - 1].maskflag = luaL_checkinteger(L, -1);
 
-			lua_pop(L, 8); // > t.conditions[i][1~8]
+			lua_pop(L, 9); // > t.conditions[i][1~9]
 
 			lua_pushstring(L, "disabled"); // < t.conditions[i]["disabled"]
 			lua_gettable(L, -2);
@@ -156,7 +157,7 @@ int LuaEncodeTrigger(lua_State* L) {
 	if (lua_istable(L, -1)) {
 		int actn = lua_rawlen(L, -1);
 		if (actn > 64) {
-			return LuaErrorf(L, "trigger has too many actions : got %d, max 16", actn);
+			return LuaErrorf(L, "trigger has too many actions : got %d, max 64", actn);
 		}
 
 		for (int i = 1; i <= actn; i++) {
@@ -166,28 +167,29 @@ int LuaEncodeTrigger(lua_State* L) {
 				return LuaErrorf(L, "action #%d is invalid. (not a table)", i);
 			}
 
-			if (lua_rawlen(L, -1) != 10) {
-				return LuaErrorf(L, "action #%d is invalid. (has %d elements, expected 8)", i, lua_rawlen(L, -1));
+			if (lua_rawlen(L, -1) != 11) {
+				return LuaErrorf(L, "action #%d is invalid. (has %d elements, expected 11)", i, lua_rawlen(L, -1));
 			}
 
 			// pop all elements
-			for (int j = 1; j <= 10; j++) {
+			for (int j = 1; j <= 11; j++) {
 				lua_pushinteger(L, j);
 				lua_gettable(L, -1 - j); // < t.actions[i][j]
 			}
 
-			t.act[i - 1].locid = luaL_checkinteger(L, -10);
-			t.act[i - 1].strid = luaL_checkinteger(L, -9);
-			t.act[i - 1].wavid = luaL_checkinteger(L, -8);
-			t.act[i - 1].time = luaL_checkinteger(L, -7);
-			t.act[i - 1].player = luaL_checkinteger(L, -6);
-			t.act[i - 1].target = luaL_checkinteger(L, -5);
-			t.act[i - 1].setting = luaL_checkinteger(L, -4);
-			t.act[i - 1].acttype = luaL_checkinteger(L, -3);
-			t.act[i - 1].num = luaL_checkinteger(L, -2);
-			t.act[i - 1].prop = luaL_checkinteger(L, -1);
+			t.act[i - 1].locid = luaL_checkinteger(L, -11);
+			t.act[i - 1].strid = luaL_checkinteger(L, -10);
+			t.act[i - 1].wavid = luaL_checkinteger(L, -9);
+			t.act[i - 1].time = luaL_checkinteger(L, -8);
+			t.act[i - 1].player = luaL_checkinteger(L, -7);
+			t.act[i - 1].target = luaL_checkinteger(L, -6);
+			t.act[i - 1].setting = luaL_checkinteger(L, -5);
+			t.act[i - 1].acttype = luaL_checkinteger(L, -4);
+			t.act[i - 1].num = luaL_checkinteger(L, -3);
+			t.act[i - 1].prop = luaL_checkinteger(L, -2);
+			t.act[i - 1].maskflag = luaL_checkinteger(L, -1);
 
-			lua_pop(L, 10); // > t.actions[i][1~8]
+			lua_pop(L, 11); // > t.actions[i][1~11]
 
 			lua_pushstring(L, "disabled"); // < t.actions[i]["disabled"]
 			lua_gettable(L, -2);

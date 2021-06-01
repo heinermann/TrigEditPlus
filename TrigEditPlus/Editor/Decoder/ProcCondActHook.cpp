@@ -43,14 +43,14 @@ int stderr_errorreporter(lua_State* L)
 	if(_currentHookType == HOOK_CONDITION)
 	{
 		TrigCond& cond = *(TrigCond*)_currentObject;
-		sprintf(errheader, "[CallConditionHook] Error on parsing condition (%d, %d, %d, %d, %d, %d, %d, %d)\n\n",
-			cond.locid, cond.player, cond.res, cond.uid, cond.setting, cond.condtype, cond.res_setting, cond.prop);
+		sprintf(errheader, "[CallConditionHook] Error on parsing condition (%d, %d, %d, %d, %d, %d, %d, %d, %d)\n\n",
+			cond.locid, cond.player, cond.res, cond.uid, cond.setting, cond.condtype, cond.res_setting, cond.prop, cond.maskflag);
 	}
 	else if(_currentHookType == HOOK_ACTION)
 	{
 		TrigAct& act = *(TrigAct*)_currentObject;
-		sprintf(errheader, "[CallActionHook] Error on parsing condition (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d)\n\n",
-			act.locid, act.strid, act.wavid, act.time, act.player, act.target, act.setting, act.acttype, act.num, act.prop);
+		sprintf(errheader, "[CallActionHook] Error on parsing condition (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)\n\n",
+			act.locid, act.strid, act.wavid, act.time, act.player, act.target, act.setting, act.acttype, act.num, act.prop, act.maskflag);
 	}
 	ss << errheader;
 
@@ -75,6 +75,7 @@ bool CallConditionHook(lua_State* L, const TrigCond& cond, std::string& ret)
 	lua_getglobal(L, "ProcessConditionHook");
 	lua_pushcfunction(L, stderr_errorreporter);
 	int errrp_f = lua_gettop(L);
+
 	lua_pushinteger(L, cond.locid);
 	lua_pushinteger(L, cond.player);
 	lua_pushinteger(L, cond.res);
@@ -83,7 +84,9 @@ bool CallConditionHook(lua_State* L, const TrigCond& cond, std::string& ret)
 	lua_pushinteger(L, cond.condtype);
 	lua_pushinteger(L, cond.res_setting);
 	lua_pushinteger(L, cond.prop);
-	if(lua_pcall(L, 9, 1, errrp_f) != LUA_OK)
+	lua_pushinteger(L, cond.maskflag);
+
+	if(lua_pcall(L, 10, 1, errrp_f) != LUA_OK)
 	{
 		lua_pop(L, 1);
 	}
@@ -117,8 +120,9 @@ bool CallActionHook(lua_State* L, const TrigAct& act, std::string& ret)
 	lua_pushinteger(L, act.acttype);
 	lua_pushinteger(L, act.num);
 	lua_pushinteger(L, act.prop);
+	lua_pushinteger(L, act.maskflag);
 
-	if(lua_pcall(L, 11, 1, errrp_f) != LUA_OK)
+	if(lua_pcall(L, 12, 1, errrp_f) != LUA_OK)
 	{
 		lua_pop(L, 1);
 	}

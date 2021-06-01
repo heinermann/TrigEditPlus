@@ -49,7 +49,7 @@ typedef struct {
 	uint8_t condtype;
 	uint8_t res_setting;
 	uint8_t prop;
-	uint16_t dummy;
+	uint16_t maskflag;
 }TrigCond;
 
 
@@ -64,7 +64,8 @@ typedef struct {
 	uint8_t acttype;
 	uint8_t num;
 	uint8_t prop;
-	uint8_t dummy[3];
+	uint8_t dummy;
+	uint16_t maskflag;
 }TrigAct;
 
 

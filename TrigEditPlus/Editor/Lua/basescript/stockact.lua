@@ -317,6 +317,14 @@ function SetDeaths(Player, Modifier, Number, Unit)
 end
 
 
+function SetDeathsX(Player, Modifier, Number, Unit, BitMask)
+    Player = ParsePlayer(Player)
+    Modifier = ParseModifier(Modifier)
+    Unit = ParseUnit(Unit)
+    return Action(BitMask, 0, 0, 0, Player, Number, Unit, 45, Modifier, 20, 0x4353)
+end
+
+
 function Order(Unit, Owner, StartLocation, OrderType, DestLocation)
     Unit = ParseUnit(Unit)
     Owner = ParsePlayer(Owner)

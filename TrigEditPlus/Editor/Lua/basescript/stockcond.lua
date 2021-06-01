@@ -101,6 +101,14 @@ function Deaths(Player, Comparison, Number, Unit)
 end
 
 
+function DeathsX(Player, Comparison, Number, Unit, BitMask)
+    Player = ParsePlayer(Player)
+    Comparison = ParseComparison(Comparison)
+    Unit = ParseUnit(Unit)
+    return Condition(BitMask, Player, Number, Unit, Comparison, 15, 0, 0, 0x4353)
+end
+
+
 function CommandLeast(Unit)
     Unit = ParseUnit(Unit)
     return Condition(0, 0, 0, Unit, 0, 16, 0, 0)

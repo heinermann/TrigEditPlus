@@ -57,6 +57,7 @@ void TriggerEditor::DerefStrings() {
 					case CONDFIELD_CONDTYPE:     stringid = trg[t].cond[c].condtype; break;
 					case CONDFIELD_RES_SETTING:  stringid = trg[t].cond[c].res_setting; break;
 					case CONDFIELD_PROP:         stringid = trg[t].cond[c].prop; break;
+					case CONDFIELD_MASKFLAG:     stringid = trg[t].cond[c].maskflag; break;
 					default: throw -1; //couldn't happen
 					}
 
@@ -87,6 +88,7 @@ void TriggerEditor::DerefStrings() {
 					case ACTFIELD_ACTTYPE: stringid = trg[t].act[a].acttype; break;
 					case ACTFIELD_NUM:     stringid = trg[t].act[a].num; break;
 					case ACTFIELD_PROP:    stringid = trg[t].act[a].prop; break;
+					case ACTFIELD_MASKFLAG:stringid = trg[t].act[a].maskflag; break;
 					default: throw -1; //couldn't happen
 					}
 
