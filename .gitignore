@@ -46,6 +46,7 @@ local.properties
 
 [Dd]ebug/
 [Rr]elease/
+VeryOptimized/
 x64/
 build/
 [Bb]in/
@@ -76,7 +77,7 @@ build/
 *.vssscc
 .builds
 *.pidb
-*.log
+*.tlog
 *.scc
 
 # Visual C++ cache files
