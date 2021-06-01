@@ -41,7 +41,7 @@ __declspec( naked ) decl \
 // Any function with SCMD2 in their middle takes SCMDraft2 style text as their input/output.
 // Any function with _RawIndex in their last counts from stringtable string #1 as 0. (eg. stringID == -1 for enmpty string)
 DECLARE_THISCALL(int           __stdcall StringTable_FindString_RawIndex(SI_VirtSCStringList*, const char*), 0x0C)
-DECLARE_THISCALL(const char* __stdcall StringTable_GetString(SI_VirtSCStringList*, int), 0x10)
+DECLARE_THISCALL(const char*   __stdcall StringTable_GetString(SI_VirtSCStringList*, int), 0x10)
 DECLARE_THISCALL(int           __stdcall StringTable_AddSCMD2String(SI_VirtSCStringList*, const char*, int, char), 0x18)
 DECLARE_THISCALL(int           __stdcall StringTable_Dereference(SI_VirtSCStringList*, __int16, int, int), 0x1C)
 DECLARE_THISCALL(int           __stdcall StringTable_DerefAndAddString(SI_VirtSCStringList*, const char*, int, int), 0x20)
@@ -163,32 +163,16 @@ int __stdcall StringTable_FindString(SI_VirtSCStringList* strtb, const char* str
 }
 
 
-char* utf8_to_cp949(const std::string& utf8String) {
-	size_t wbuflen = MultiByteToWideChar(CP_UTF8, 0, utf8String.c_str(), -1, 0, 0);
-	std::wstring ws(wbuflen, 0);
-	MultiByteToWideChar(CP_UTF8, 0, utf8String.data(), utf8String.size(), const_cast<wchar_t*>(ws.data()), ws.size());
-
-	size_t abuflen = WideCharToMultiByte(CP_ACP, 0, ws.c_str(), -1, NULL, 0, NULL, NULL);
-	char* os = (char*)scmd2_malloc(abuflen);
-	WideCharToMultiByte(CP_ACP, 0, ws.data(), ws.size(), os, abuflen, NULL, NULL);
-	return os;
-}
-
-
 //SCMD2Text patch
 int __stdcall StringTable_AddString(SI_VirtSCStringList* strtb, const char* text, int SectionName, char AlwaysCreate) {
-	char* cp949text = utf8_to_cp949(text);
-	char* scmd2text = ConvertString_RawToSCMD2(cp949text);
-	scmd2_free(cp949text);
+	char* scmd2text = ConvertString_RawToSCMD2(text);
 	int retval = StringTable_AddSCMD2String(strtb, scmd2text, SectionName, AlwaysCreate);
 	scmd2_free(scmd2text);
 	return retval;
 }
 
 char __stdcall StringTable_SetText(SI_VirtSCStringList* strtb, const char* string, int stringID) {
-	char* cp949text = utf8_to_cp949(string);
-	char* scmd2text = ConvertString_RawToSCMD2(cp949text);
-	scmd2_free(cp949text);
+	char* scmd2text = ConvertString_RawToSCMD2(string);
 	int retval = StringTable_SetSCMD2Text(strtb, scmd2text, stringID);
 	scmd2_free(scmd2text);
 	return retval;
