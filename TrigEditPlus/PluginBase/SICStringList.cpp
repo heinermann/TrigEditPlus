@@ -24,36 +24,6 @@
 #include <string>
 
 
- // __thiscall emulator. First argument -> ecx.
-#define DECLARE_THISCALL(decl, offset) \
-__declspec( naked ) decl \
-{ \
-    _asm pop eax \
-    _asm pop ecx \
-    _asm push eax \
-    _asm mov eax, [ecx] \
-    _asm mov eax, [eax + offset] \
-    _asm jmp eax \
-}
-
-// SICStringList uses virtual function calls. We should emulate __thiscall.
-
-// Any function with SCMD2 in their middle takes SCMDraft2 style text as their input/output.
-// Any function with _RawIndex in their last counts from stringtable string #1 as 0. (eg. stringID == -1 for enmpty string)
-DECLARE_THISCALL(int           __stdcall StringTable_FindString_RawIndex(SI_VirtSCStringList*, const char*), 0x0C)
-DECLARE_THISCALL(const char*   __stdcall StringTable_GetString(SI_VirtSCStringList*, int), 0x10)
-DECLARE_THISCALL(int           __stdcall StringTable_AddSCMD2String(SI_VirtSCStringList*, const char*, int, char), 0x18)
-DECLARE_THISCALL(int           __stdcall StringTable_Dereference(SI_VirtSCStringList*, __int16, int, int), 0x1C)
-DECLARE_THISCALL(int           __stdcall StringTable_DerefAndAddString(SI_VirtSCStringList*, const char*, int, int), 0x20)
-DECLARE_THISCALL(char          __stdcall StringTable_SetSCMD2Text(SI_VirtSCStringList*, const char*, int), 0x24)
-DECLARE_THISCALL(int           __stdcall StringTable_GetTotalStringNum(SI_VirtSCStringList*), 0x2C)
-DECLARE_THISCALL(char          __stdcall StringTable_BackupStrings(SI_VirtSCStringList*), 0x3C)
-DECLARE_THISCALL(char          __stdcall StringTable_RestoreBackup(SI_VirtSCStringList*), 0x40)
-DECLARE_THISCALL(char          __stdcall StringTable_ClearBackup(SI_VirtSCStringList*), 0x44)
-
-
-
-
 static int ParseXDigit(int ch) {
 	if ('0' <= ch && ch <= '9') return ch - '0';
 	else if ('a' <= ch && ch <= 'f') return ch - 'a' + 10;
@@ -156,7 +126,7 @@ static char* ConvertString_SCMD2ToRaw(const char* scmd2text) {
 int __stdcall StringTable_FindString(SI_VirtSCStringList* strtb, const char* string) {
 	if (*string == 0) return 0; //empty string
 	else {
-		int retval = StringTable_FindString_RawIndex(strtb, string);
+		int retval = strtb->FindString_RawIndex(string);
 		if (retval == -1) return -1;
 		else return retval + 1;
 	}
@@ -166,14 +136,14 @@ int __stdcall StringTable_FindString(SI_VirtSCStringList* strtb, const char* str
 //SCMD2Text patch
 int __stdcall StringTable_AddString(SI_VirtSCStringList* strtb, const char* text, int SectionName, char AlwaysCreate) {
 	char* scmd2text = ConvertString_RawToSCMD2(text);
-	int retval = StringTable_AddSCMD2String(strtb, scmd2text, SectionName, AlwaysCreate);
+	int retval = strtb->AddSCMD2String(scmd2text, SectionName, AlwaysCreate);
 	scmd2_free(scmd2text);
 	return retval;
 }
 
 char __stdcall StringTable_SetText(SI_VirtSCStringList* strtb, const char* string, int stringID) {
 	char* scmd2text = ConvertString_RawToSCMD2(string);
-	int retval = StringTable_SetSCMD2Text(strtb, scmd2text, stringID);
+	int retval = strtb->SetSCMD2Text(scmd2text, stringID);
 	scmd2_free(scmd2text);
 	return retval;
 }

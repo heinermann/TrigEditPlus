@@ -33,7 +33,7 @@ void TriggerEditor::DerefStrings() {
 	size_t trgn = _editordata->Triggers->ChunkSize / 2400;
 	SI_VirtSCStringList* strtb = _editordata->EngineData->MapStrings;
 
-	int stringn = StringTable_GetTotalStringNum(strtb);
+	int stringn = strtb->GetTotalStringNum();
 
 	// For every trigger
 	for(size_t t = 0 ; t < trgn ; t++) {
@@ -62,7 +62,7 @@ void TriggerEditor::DerefStrings() {
 					}
 
 					if(stringid > stringn || stringid < 0) continue; // Invalid string id
-					StringTable_Dereference(strtb, stringid, 'GIRT', 0);
+					strtb->Dereference(stringid, 'GIRT', 0);
 				}
 			}
 		}
@@ -93,7 +93,7 @@ void TriggerEditor::DerefStrings() {
 					}
 
 					if(stringid > stringn || stringid < 0) continue; // Invalid string id
-					StringTable_Dereference(strtb, stringid, 'GIRT', 0);
+					strtb->Dereference(stringid, 'GIRT', 0);
 				}
 			}
 		}

@@ -185,7 +185,7 @@ MapNamespaceImpl::MapNamespaceImpl(const TriggerEditor_Arg& data) {
 		int unameindex = EngineData->UnitCustomNames[i];
 		const char* uname = NULL;
 
-		if(unameindex) uname = StringTable_GetString(EngineData->MapStrings, unameindex);
+		if(unameindex) uname = EngineData->MapStrings->GetString(unameindex);
 		if(uname == NULL) uname = EngineData->UnitNames[i];
 		unitname[i].assign(RemoveColorFromString(uname));
 	}
@@ -224,7 +224,7 @@ MapNamespaceImpl::MapNamespaceImpl(const TriggerEditor_Arg& data) {
 		
 		if(EngineData->MapLocations[i].Exists) {
 			int lnameindex = lnameindex = EngineData->MapLocations[i].Data.Name;
-			lname = StringTable_GetString(EngineData->MapStrings, lnameindex);
+			lname = EngineData->MapStrings->GetString(lnameindex);
 		}
 
 		if(lname == NULL) {
@@ -258,7 +258,7 @@ MapNamespaceImpl::MapNamespaceImpl(const TriggerEditor_Arg& data) {
 		char _swname[32];
 
 		if(swnameindex) {
-			swname = StringTable_GetString(EngineData->MapStrings, swnameindex);
+			swname = EngineData->MapStrings->GetString(swnameindex);
 		}
 
 		if(swname == NULL) {

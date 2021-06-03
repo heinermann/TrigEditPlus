@@ -28,6 +28,8 @@
 #include "../version.h"
 #include <CommCtrl.h>
 
+#include <Windows.h>
+
 
 ///////
 
@@ -731,7 +733,7 @@ DWORD crc32(const void *buf2, size_t len);
 void TriggerEditor::UpdateTriggerList(const std::vector<TrigBufferEntry>& trigbuffer)
 {
 	auto& strtb = _editordata->EngineData->MapStrings;
-	const int totstrn = StringTable_GetTotalStringNum(strtb);
+	const int totstrn = strtb->GetTotalStringNum();
 
 	HWND hTreeView = this->hTriggerList;
 	TreeView_DeleteAllItems(hTreeView);
@@ -777,7 +779,7 @@ void TriggerEditor::UpdateTriggerList(const std::vector<TrigBufferEntry>& trigbu
 
 				int strid = trg.act[i].strid;
 				if(strid < 0 || strid > totstrn) break;
-				const char* rawcomment0 = StringTable_GetString(strtb, strid);
+				const char* rawcomment0 = strtb->GetString(strid);
 				if(rawcomment0 == NULL) break;
 
 				// Decode string to lua comments

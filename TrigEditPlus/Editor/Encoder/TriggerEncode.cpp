@@ -269,7 +269,7 @@ char* GetUPRPChunkData();
 
 bool TriggerEditor::EncodeTriggerCode() {
 	//Prepare for encode.
-	StringTable_BackupStrings(_editordata->EngineData->MapStrings);
+	_editordata->EngineData->MapStrings->BackupStrings();
 	ClearErrors();
 
 	// Initialize new lua state.
@@ -288,7 +288,7 @@ bool TriggerEditor::EncodeTriggerCode() {
 	if(luaL_loadbufferx(L, editortext.data(), editortext.size(), "main", "t") != LUA_OK) {
 		PrintErrorMessage(lua_tostring(L, -1));
 		lua_close(L);
-		StringTable_RestoreBackup(_editordata->EngineData->MapStrings);
+		_editordata->EngineData->MapStrings->RestoreBackup();
 		PrintErrorMessage("Compile failed.");
 		ClearPropertyMap();
 		return false;
@@ -297,7 +297,7 @@ bool TriggerEditor::EncodeTriggerCode() {
 	if(lua_pcall(L, 0, 0, -2) != LUA_OK) {
 		PrintErrorMessage(lua_tostring(L, -1));
 		lua_close(L);
-		StringTable_RestoreBackup(_editordata->EngineData->MapStrings);
+		_editordata->EngineData->MapStrings->RestoreBackup();
 		PrintErrorMessage("Compile failed.");
 		_trigbuffer.clear();
 		ClearPropertyMap();
@@ -308,7 +308,7 @@ bool TriggerEditor::EncodeTriggerCode() {
 
 	// Compile Done.
 
-	StringTable_ClearBackup(_editordata->EngineData->MapStrings);
+	_editordata->EngineData->MapStrings->ClearBackup();
 
 	// Dereferencing should be after trigger compilication
 	//

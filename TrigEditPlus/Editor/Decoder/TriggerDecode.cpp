@@ -84,7 +84,7 @@ void TriggerEditor::DecodeTrigger(lua_State* L, StringBuffer& buf, const Trig& c
 	char trigCRC32[9];
 	sprintf(trigCRC32, "%08X", crc32(&content, 2400));
 
-	int totstrn = StringTable_GetTotalStringNum(_editordata->EngineData->MapStrings);
+	int totstrn = _editordata->EngineData->MapStrings->GetTotalStringNum();
 
 	// If trigger isn't executed by any of the players, then special-decode that trigger.
 	for (i = 0; i < 27; i++) {
@@ -110,7 +110,7 @@ void TriggerEditor::DecodeTrigger(lua_State* L, StringBuffer& buf, const Trig& c
 		else if (content.act[i].acttype == COMMENT) {
 			int strid = content.act[i].strid;
 			if (strid < 0 || strid > totstrn) break;
-			const char* rawcomment0 = StringTable_GetString(_editordata->EngineData->MapStrings, strid);
+			const char* rawcomment0 = _editordata->EngineData->MapStrings->GetString(strid);
 			if (rawcomment0 == NULL) break;
 			if (strchr(rawcomment0, '\n') == NULL) comment_singleline = true;
 			else comment_singleline = false;
