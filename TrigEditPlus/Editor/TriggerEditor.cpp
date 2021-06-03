@@ -28,7 +28,8 @@
 #include "../version.h"
 #include <CommCtrl.h>
 
-#include <Windows.h>
+// Not sure why this is undefined in 64-bit builds...
+#define GWL_USERDATA        (-21)
 
 
 ///////
