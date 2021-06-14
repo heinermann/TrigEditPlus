@@ -146,7 +146,7 @@ void TriggerEditor::PrintErrorMessage(const std::string& msg) {
 }
 
 
-int TriggerEditor::SendSciMessage(int msg, WPARAM wParam, LPARAM lParam) {
+LONG_PTR TriggerEditor::SendSciMessage(int msg, WPARAM wParam, LPARAM lParam) {
 	return _pSciMsg(_pSciWndData, msg, wParam, lParam);
 }
 

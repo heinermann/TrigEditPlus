@@ -158,7 +158,7 @@ public:
 	
 	void ClearErrors();
 	void PrintErrorMessage(const std::string& str);
-	int SendSciMessage(int msg, WPARAM, LPARAM);
+	LONG_PTR SendSciMessage(int msg, WPARAM, LPARAM);
 
 	std::string GetEditorText() const;
 	void SetEditorText(const std::string& str);
