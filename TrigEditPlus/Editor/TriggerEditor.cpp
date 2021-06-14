@@ -161,7 +161,7 @@ void Editor_CharAdded(SCNotification* ne, TriggerEditor* te);
 void ApplyEditorStyle(TriggerEditor* te);
 
 LRESULT CALLBACK TrigEditDlgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-	TriggerEditor* te = reinterpret_cast<TriggerEditor*>(GetWindowLong(hWnd, GWL_USERDATA));
+	TriggerEditor* te = reinterpret_cast<TriggerEditor*>(GetWindowLongPtr(hWnd, GWL_USERDATA));
 	const static int FindReplaceMsg = RegisterWindowMessage(FINDMSGSTRING);
 
 
@@ -174,8 +174,8 @@ LRESULT CALLBACK TrigEditDlgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPar
 	case WM_CREATE:
 	{
 		EnableWindow(hSCMD2MainWindow, FALSE);
-		te = (TriggerEditor*)((CREATESTRUCT*)lParam)->lpCreateParams;
-		SetWindowLong(hWnd, GWL_USERDATA, (LONG)te);
+		te = (TriggerEditor*)LPCREATESTRUCT(lParam)->lpCreateParams;
+		SetWindowLongPtr(hWnd, GWL_USERDATA, (LONG_PTR)te);
 
 		// Init trigger list
 		te->hTriggerList = CreateWindowEx(

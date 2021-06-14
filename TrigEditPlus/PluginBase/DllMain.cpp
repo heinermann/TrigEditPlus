@@ -84,7 +84,7 @@ BOOL WINAPI InitPlugin(	HWND MainWindow,
 
 	// Change these to get your own sections.
 	if(PluginMenuName != NULL) {
-		RequestedSections[0] = 'GIRT';	
+		RequestedSections[0] = 'GIRT';
 	}
 
 	return true;

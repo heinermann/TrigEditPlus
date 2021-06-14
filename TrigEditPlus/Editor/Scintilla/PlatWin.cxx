@@ -2871,7 +2871,7 @@ LRESULT ListBoxX::WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
 
 	case WM_DESTROY:
 		lb = 0;
-		::SetWindowLong(hWnd, 0, 0);
+		::SetWindowLongPtr(hWnd, 0, 0);
 		return ::DefWindowProc(hWnd, iMessage, wParam, lParam);
 
 	case WM_ERASEBKGND:
